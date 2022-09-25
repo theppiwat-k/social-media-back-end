@@ -1,13 +1,14 @@
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { unless } = require("express-unless");
+
 const dbConfig = require("./config/db.config");
 const auth = require("./middlewares/auth.js");
 const errors = require("./middlewares/errors.js");
-const  { unless } = require("express-unless");
 
-app.use(cors());
+const app = express();
+const bodyParser = require("body-parser");
 
 mongoose.Promise = global.Promise;
 mongoose
@@ -24,6 +25,8 @@ mongoose
     }
   );
 
+app.use(cors());
+app.use(bodyParser.json());
 
 auth.authenticateToken.unless = unless;
 app.use(
@@ -36,9 +39,15 @@ app.use(
 );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // initialize routes
 app.use("/users", require("./routes/users.routes"));
+app.post("/post", function (req, res) {
+  let body = req.body;
+  console.log(body);
+  res.send(body);
+});
 
 // middleware for error responses
 app.use(errors.errorHandler);
