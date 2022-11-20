@@ -27,7 +27,6 @@ async function login({ username, password }, callback) {
 
 async function register(params, callback) {
   if (params.username === undefined) {
-    console.log(params.username);
     return callback(
       {
         message: "Username Required",

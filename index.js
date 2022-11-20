@@ -28,6 +28,7 @@ mongoose
 app.use(cors());
 app.use(bodyParser.json());
 
+
 auth.authenticateToken.unless = unless;
 app.use(
   auth.authenticateToken.unless({
@@ -39,15 +40,10 @@ app.use(
 );
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
+// app.use(express.urlencoded({ extended: false }));
 // initialize routes
 app.use("/users", require("./routes/users.routes"));
-app.post("/post", function (req, res) {
-  let body = req.body;
-  console.log(body);
-  res.send(body);
-});
+app.use("/posts", require("./routes/posts.routes"));
 
 // middleware for error responses
 app.use(errors.errorHandler);

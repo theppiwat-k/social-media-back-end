@@ -35,5 +35,5 @@ exports.login = (req, res, next) => {
 };
 
 exports.userProfile = (req, res, next) => {
-  return res.status(401).json({ message: "Authorized User!!" });
+  return res.status(200).json({ message: "Authorized User!!" });
 };
