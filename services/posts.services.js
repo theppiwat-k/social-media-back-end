@@ -17,6 +17,16 @@ async function postStatus({ username, message }, callback) {
   }
 }
 
+async function getStatus({},callback) {
+  try {
+    const post = await Post.find();
+    return callback(null, post);
+  } catch (error) {
+    return callback(error.message);
+  }
+}
+
 module.exports = {
   postStatus,
+  getStatus,
 };

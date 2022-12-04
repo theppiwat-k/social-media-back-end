@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const userServices = require("../services/users.services");
-
+const tokenServices = require("../services/tokens.services");
 
 exports.register = (req, res, next) => {
   const { password } = req.body;
@@ -20,10 +20,23 @@ exports.register = (req, res, next) => {
   });
 };
 
-exports.login = (req, res, next) => {
+exports.login = async (req, res, next) => {
+  const { username, password } = req.body;
+  await userServices.login({ username, password }, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+    return res.status(200).send({
+      message: "Success",
+      data: results,
+    });
+  });
+};
+
+exports.logout = (req, res, next) => {
   const { username, password } = req.body;
 
-  userServices.login({ username, password }, (error, results) => {
+  userServices.logout({ username, password }, (error, results) => {
     if (error) {
       return next(error);
     }
@@ -35,5 +48,18 @@ exports.login = (req, res, next) => {
 };
 
 exports.userProfile = (req, res, next) => {
+  const username = req.body.username;
+  userServices.getUserProfile(username, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+    return res.status(200).send({
+      message: "Success",
+      data: results,
+    });
+  });
+};
+
+exports.authenticateToken = (req, res, next) => {
   return res.status(200).json({ message: "Authorized User!!" });
 };
