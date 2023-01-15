@@ -7,7 +7,7 @@ const dbConfig = require("./config/db.config");
 const auth = require("./middlewares/auth.js");
 const errors = require("./middlewares/errors.js");
 
-const app = express();
+const app = express({ extends: false });
 const bodyParser = require("body-parser");
 
 mongoose.Promise = global.Promise;
@@ -28,7 +28,6 @@ mongoose
 app.use(cors());
 app.use(bodyParser.json());
 
-
 auth.authenticateToken.unless = unless;
 app.use(
   auth.authenticateToken.unless({
@@ -44,7 +43,11 @@ app.use(express.json());
 // initialize routes
 app.use("/users", require("./routes/users.routes"));
 app.use("/posts", require("./routes/posts.routes"));
-
+ 
+// 404
+app.use((req, res) => {
+  res.status(404).send({ error: "404 Not found" });
+});
 // middleware for error responses
 app.use(errors.errorHandler);
 
