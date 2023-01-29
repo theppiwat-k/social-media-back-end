@@ -39,24 +39,19 @@ async function login({ username, password }, callback) {
   }
 }
 
-async function logout({ username, password }, callback) {
-  const user = await User.findOne({ username });
-
-  if (user != null) {
-    if (bcrypt.compareSync(password, user.password)) {
-      const token = "";
-      // call toJSON method applied during model instantiation
-      return callback(null, { ...user.toJSON(), token });
-    } else {
+async function logout(body, callback) {
+  const token = await Token.findOne({token: body});
+  token.active = false;
+  token
+    .save()
+    .then((response) => {
+      return callback(null, response);
+    })
+    .catch((err) => {
       return callback({
-        message: "Invalid Username/Password!",
+        message: err,
       });
-    }
-  } else {
-    return callback({
-      message: "Invalid Username/Password!",
     });
-  }
 }
 
 async function getUserProfile(username, callback) {
@@ -91,9 +86,15 @@ async function register(params, callback) {
     });
 }
 
+async function getToken(body, callback) {
+  const token = await Token.findOne({token: body});
+  return callback(null, token);
+}
+
 module.exports = {
   login,
   logout,
   register,
   getUserProfile,
+  getToken
 };

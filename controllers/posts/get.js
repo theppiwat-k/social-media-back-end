@@ -7,7 +7,5 @@ exports.getStatus = async (req, res, next) => {
       }
       return res.status(200).send({ message: "Success", data: results });
     });
-  
-    next();
   };
   

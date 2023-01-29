@@ -11,6 +11,6 @@ router.post("/register", registerController.register);
 router.post("/login", loginController.login);
 router.post("/logout", logoutController.logout);
 router.post("/user-profile", userProfileController.userProfile);
-router.get("/authorization", authenticateTokenController.authenticateToken);
+router.get("/authorization", authenticateTokenController.getToken);
 
 module.exports = router;

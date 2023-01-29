@@ -18,7 +18,7 @@ const TokenSchema = new Schema({
 
 TokenSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject.id.toString();
+    // returnedObject.id = returnedObject.id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
   },
