@@ -1,10 +1,11 @@
-const postController = require("../controllers/post.controller.js");
+const getStatusController =require("../controllers/posts/get");
+const postStatusController = require("../controllers/posts/save");
 
 const express = require("express");
 const router = express.Router();
 
-router.post("/status", postController.status);
-router.get("/status", postController.getStatus);
+router.get("/status", getStatusController.getStatus);
+router.post("/status", postStatusController.saveStatus);
 // router.post("/story", postController.story);
 
 module.exports = router;

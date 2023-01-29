@@ -39,15 +39,19 @@ app.use(
 );
 
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
+const users = require("./routes/users.routes");
+const posts = require("./routes/posts.routes");
+app.use(express.urlencoded({ extended: false }));
+
 // initialize routes
-app.use("/users", require("./routes/users.routes"));
-app.use("/posts", require("./routes/posts.routes"));
- 
+app.use("/users", users);
+app.use("/posts", posts);
+
 // 404
 app.use((req, res) => {
   res.status(404).send({ error: "404 Not found" });
 });
+
 // middleware for error responses
 app.use(errors.errorHandler);
 
