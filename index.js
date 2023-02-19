@@ -2,14 +2,16 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { unless } = require("express-unless");
+const dotenv = require("dotenv");
 
 const dbConfig = require("./config/db.config");
 const auth = require("./middlewares/auth.js");
 const errors = require("./middlewares/errors.js");
 
+dotenv.config();
 const app = express({ extends: false });
 const bodyParser = require("body-parser");
-
+const { PORT } = process.env;
 mongoose.Promise = global.Promise;
 mongoose
   .connect(dbConfig.db, {
@@ -57,6 +59,6 @@ app.use((req, res) => {
 app.use(errors.errorHandler);
 
 // listen for requests
-app.listen(process.env.port || 4000, function () {
-  console.log("Ready to Go!");
+app.listen(PORT || 4000, function () {
+  console.log(`Ready to Go! PORT = ${PORT}`);
 });
