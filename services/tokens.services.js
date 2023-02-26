@@ -1,18 +1,15 @@
-const Token = require("../models/token.model");
+const jwt = require('jsonwebtoken');
+const { TOKEN_SECRET } = process.env;
 
-async function token(token, active, callback) {
-  const newtoken = await new Token({
-    token: token,
-    active: active,
+const Token = require('../models/token.model');
+
+exports.generateAccessToken = (username) => {
+  return jwt.sign({ data: username }, TOKEN_SECRET, {
+    expiresIn: '1h',
   });
-  newtoken
-    .save()
-    .then(() => {})
-    .catch((error) => {
-      return callback(error);
-    });
-}
+};
 
-module.exports = {
-  token,
+exports.getToken = async (body, next) => {
+  const token = await Token.findOne({ token: body });
+  return next(null, token);
 };

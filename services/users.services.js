@@ -1,77 +1,73 @@
-const User = require("../models/user.model");
-const bcrypt = require("bcryptjs");
-const auth = require("../middlewares/auth.js");
-const Token = require("../models/token.model");
+const bcrypt = require('bcryptjs');
+const tokenService = require('./tokens.services');
 
-const crypto = require("crypto");
-const { response } = require("express");
-const key = "verysecretkey"; // Key for cryptograpy. Keep it secret
+const User = require('../models/user.model');
+const Token = require('../models/token.model');
 
-async function login({ username, password }, callback) {
+exports.login = async ({ username, password }, next) => {
   const user = await User.findOne({ username });
-
   if (user != null) {
     if (bcrypt.compareSync(password, user.password)) {
-      const token = auth.generateAccessToken(username);
-      // call toJSON method applied during model instantiation
+      const token = tokenService.generateAccessToken(username);
       const newtoken = await new Token({
         token: token,
         active: true,
       });
       newtoken
         .save()
-        .then((reponse) => {
-          console.log(reponse);
+        .then(() => {
+          return next(null, { ...user.toJSON(), token });
         })
         .catch((err) => {
-          console.log(err);
+          return next({
+            message: err,
+          });
         });
-      return callback(null, { ...user.toJSON(), token });
     } else {
-      return callback({
-        message: "Invalid Username/Password!",
+      return next({
+        message: 'Invalid Username/Password!',
       });
     }
   } else {
-    return callback({
-      message: "Invalid Username/Password!",
+    return next({
+      message: 'Invalid Username/Password!',
     });
   }
-}
+};
 
-async function logout(body, callback) {
-  const token = await Token.findOne({token: body});
+exports.logout = async (body, next) => {
+  const token = await Token.findOne({ token: body });
   token.active = false;
   token
     .save()
     .then((response) => {
-      return callback(null, response);
+      return next(null, response);
     })
     .catch((err) => {
-      return callback({
+      return next({
         message: err,
       });
     });
-}
+};
 
-async function getUserProfile(username, callback) {
+exports.getUserProfile = async (username, next) => {
   const user = await User.findOne({ username });
   if (user != null) {
-    return callback(null, { ...user.toJSON() });
+    return next(null, { ...user.toJSON() });
   } else {
-    return callback({
-      message: "Invalid Username/Password!",
+    return next({
+      message: 'Invalid Username/Password!',
     });
   }
-}
+};
 
-async function register(params, callback) {
+exports.register = async (params, next) => {
   if (params.username === undefined) {
-    return callback(
+    return next(
       {
-        message: "Username Required",
+        message: 'Username Required',
       },
-      ""
+      ''
     );
   }
 
@@ -79,22 +75,9 @@ async function register(params, callback) {
   user
     .save()
     .then((response) => {
-      return callback(null, response);
+      return next(null, response);
     })
     .catch((error) => {
-      return callback(error);
+      return next(error);
     });
-}
-
-async function getToken(body, callback) {
-  const token = await Token.findOne({token: body});
-  return callback(null, token);
-}
-
-module.exports = {
-  login,
-  logout,
-  register,
-  getUserProfile,
-  getToken
 };

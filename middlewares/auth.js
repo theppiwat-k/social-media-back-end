@@ -1,9 +1,9 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
+const { TOKEN_SECRET } = process.env;
 
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  const { TOKEN_SECRET } = process.env;
+exports.authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
   if (!token) {
     return res.sendStatus(401);
   } else {
@@ -13,17 +13,7 @@ function authenticateToken(req, res, next) {
       return next();
     });
   }
-}
-
-function generateAccessToken(username) {
-  return jwt.sign({ data: username }, TOKEN_SECRET, {
-    expiresIn: "1h",
-  });
-}
-
-authenticateToken.unless = require("express-unless");
-
-module.exports = {
-  authenticateToken,
-  generateAccessToken,
 };
+
+
+this.authenticateToken.unless = require('express-unless');
