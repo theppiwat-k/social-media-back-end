@@ -4,16 +4,15 @@ const cors = require('cors');
 const { unless } = require('express-unless');
 require('dotenv').config();
 
-const dbConfig = require('./config/db.config');
 const auth = require('./middlewares/auth.js');
 const errors = require('./middlewares/errors.js');
 
 const app = express({ extends: false });
 const bodyParser = require('body-parser');
-const { PORT } = process.env;
+const { DB,PORT } = process.env;
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(dbConfig.db, {
+  .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
