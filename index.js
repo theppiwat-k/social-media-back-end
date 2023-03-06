@@ -26,7 +26,6 @@ mongoose
   );
 
 app.use(cors());
-// https://stackoverflow.com/questions/47232187/express-json-vs-bodyparser-json Recheck me please
 
 auth.authenticateToken.unless = unless;
 app.use(
