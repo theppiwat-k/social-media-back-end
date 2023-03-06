@@ -17,7 +17,6 @@ module.exports = async (email, res, next) => {
   });
 
   // send mail with defined transport object
-  console.log(email);
   let info = await transporter.sendMail({
     from: `"Fred Foo 👻" <foo@example.com>`, // sender address
     to: `${email}`, // list of receivers
