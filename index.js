@@ -8,7 +8,6 @@ const auth = require('./middlewares/auth.js');
 const errors = require('./middlewares/errors.js');
 
 const app = express({ extends: false });
-const bodyParser = require('body-parser');
 const { DB,PORT } = process.env;
 mongoose.Promise = global.Promise;
 mongoose
