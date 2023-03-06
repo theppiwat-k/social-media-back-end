@@ -26,8 +26,7 @@ mongoose
   );
 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// https://stackoverflow.com/questions/47232187/express-json-vs-bodyparser-json Recheck me please
 
 auth.authenticateToken.unless = unless;
 app.use(

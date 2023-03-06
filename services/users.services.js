@@ -4,11 +4,11 @@ const tokenService = require('./tokens.services');
 const User = require('../models/user.model');
 const Token = require('../models/token.model');
 
-exports.login = async ({ username, password }, next) => {
-  const user = await User.findOne({ username });
+module.exports.login = async ({ email, password }, next) => {
+  const user = await User.findOne({ email });
   if (user != null) {
     if (bcrypt.compareSync(password, user.password)) {
-      const token = tokenService.generateAccessToken(username);
+      const token = tokenService.generateAccessToken(email);
       const newtoken = await new Token({
         token: token,
         active: true,
@@ -35,7 +35,7 @@ exports.login = async ({ username, password }, next) => {
   }
 };
 
-exports.logout = async (body, next) => {
+module.exports.logout = async (body, next) => {
   const token = await Token.findOne({ token: body });
   token.active = false;
   token
@@ -50,7 +50,7 @@ exports.logout = async (body, next) => {
     });
 };
 
-exports.getUserProfile = async (username, next) => {
+module.exports.getUserProfile = async (username, next) => {
   const user = await User.findOne({ username });
   if (user != null) {
     return next(null, { ...user.toJSON() });
@@ -61,7 +61,7 @@ exports.getUserProfile = async (username, next) => {
   }
 };
 
-exports.register = async (params, next) => {
+module.exports.register = async (params, next) => {
   if (params.username === undefined) {
     return next(
       {
