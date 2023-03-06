@@ -1,15 +1,14 @@
-const userServices = require("../../services/users.services");
+const { getUserProfile } = require('../../services/users.services');
 
 exports.userProfile = (req, res, next) => {
-    const username = req.body.username;
-    userServices.getUserProfile(username, (error, results) => {
-      if (error) {
-        return next(error);
-      }
-      return res.status(200).send({
-        message: "Success",
-        data: results,
-      });
+  const username = req.body.username;
+  getUserProfile(username, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+    return res.status(200).send({
+      message: 'Success',
+      data: results,
     });
-  };
-  
+  });
+};

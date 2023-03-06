@@ -50,8 +50,8 @@ module.exports.logout = async (body, next) => {
     });
 };
 
-module.exports.getUserProfile = async (username, next) => {
-  const user = await User.findOne({ username });
+module.exports.getUserProfile = async (email, next) => {
+  const user = await User.findOne({ email });
   if (user != null) {
     return next(null, { ...user.toJSON() });
   } else {

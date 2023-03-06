@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const userServices = require('../../services/users.services');
+const { register } = require('../../services/users.services');
 
 module.exports.register = async (req, res, next) => {
   const { password } = req.body;
@@ -8,7 +8,7 @@ module.exports.register = async (req, res, next) => {
 
   req.body.password = await bcrypt.hashSync(password, salt);
 
-  userServices.register(req.body, (error, results) => {
+  register(req.body, (error, results) => {
     if (error) {
       return next(error);
     }

@@ -1,7 +1,7 @@
-const userServices = require('../../services/users.services');
+const { login } = require('../../services/users.services');
 
 module.exports.login = async (req, res, next) => {
-  await userServices.login(req.body, (error, results) => {
+  await login(req.body, (error, results) => {
     if (error) {
       return next(error);
     }
