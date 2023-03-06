@@ -13,7 +13,7 @@ module.exports.register = async (req, res, next) => {
       return next(error);
     }
     return res.status(200).send({
-      message: 'Success',
+      message: 'Success, We have sent email for validate your account',
       data: results,
     });
   });

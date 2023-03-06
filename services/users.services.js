@@ -1,8 +1,9 @@
 const bcrypt = require('bcryptjs');
 const tokenService = require('./tokens.services');
-
+const crypto = require('crypto');
 const User = require('../models/user.model');
 const Token = require('../models/token.model');
+const sendMail = require('../utils/sendMail');
 
 module.exports.login = async ({ email, password }, next) => {
   const user = await User.findOne({ email });
@@ -70,11 +71,21 @@ module.exports.register = async (params, next) => {
       ''
     );
   }
-
-  const user = new User(params);
+  const validateString = await crypto.randomBytes(32).toString('hex');
+  const body = {
+    email: params.email,
+    password: params.password,
+    username: params.email,
+    active: {
+      validateString: validateString,
+      date: Date.now(),
+    },
+  };
+  const user = new User(body);
   user
     .save()
-    .then((response) => {
+    .then(async (response) => {
+      await sendMail(body.email);
       return next(null, response);
     })
     .catch((error) => {
