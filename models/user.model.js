@@ -18,7 +18,7 @@ const UserSchema = new Schema({
   },
   active: {
     status: { type: Boolean, required: true, default: false },
-    validateString: {
+    validateKey: {
       type: String,
     },
     date: {

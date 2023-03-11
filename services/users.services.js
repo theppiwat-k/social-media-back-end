@@ -71,24 +71,47 @@ module.exports.register = async (params, next) => {
       ''
     );
   }
-  const validateString = await crypto.randomBytes(32).toString('hex');
+  const validateKey = await crypto.randomBytes(32).toString('hex');
   const body = {
     email: params.email,
     password: params.password,
     username: params.email,
     active: {
-      validateString: validateString,
+      validateKey: validateKey,
       date: Date.now(),
     },
   };
   const user = new User(body);
-  user
+  await user
     .save()
     .then(async (response) => {
-      await sendMail(body.email);
+      await sendMail(response);
       return next(null, response);
     })
     .catch((error) => {
       return next(error);
     });
+};
+
+module.exports.activatedUser = async (params, next) => {
+  const { email, validateKey } = params;
+  const { active } = await User.findOne({ email });
+  if (validateKey === active.validateKey) {
+    await User.updateOne(
+      { email: email },
+      {
+        active: {
+          status: true,
+        },
+      }
+    )
+      .then((response) => {
+        return next(null, response);
+      })
+      .catch((error) => {
+        return next(error);
+      });
+  } else {
+    return next(error);
+  }
 };

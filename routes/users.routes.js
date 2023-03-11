@@ -1,17 +1,20 @@
-const registerController = require("../controllers/users/register");
-const loginController = require("../controllers/users/login");
-const logoutController = require("../controllers/users/logout");
-const userProfileController = require("../controllers/users/userProfile");
-const authenticateTokenController = require("../controllers/users/authenticateToken");
-const validateRegister = require("../middlewares/validateRegister");
+const registerController = require('../controllers/users/register');
+const loginController = require('../controllers/users/login');
+const logoutController = require('../controllers/users/logout');
+const userProfileController = require('../controllers/users/userProfile');
+const authenticateTokenController = require('../controllers/users/authenticateToken');
+const activatedController = require('../controllers/users/activatedUser');
 
-const express = require("express");
+const validateRegister = require('../middlewares/validateRegister');
+
+const express = require('express');
 const router = express.Router();
 
-router.post("/register", registerController.register);
-router.post("/login",validateRegister, loginController.login);
-router.post("/logout", logoutController.logout);
-router.post("/user-profile", userProfileController.userProfile);
-router.get("/authorization", authenticateTokenController.getToken);
+router.post('/register', registerController.register);
+router.post('/login', validateRegister, loginController.login);
+router.post('/logout', logoutController.logout);
+router.post('/user-profile', userProfileController.userProfile);
+router.get('/authorization', authenticateTokenController.getToken);
+router.get('/activated', activatedController.activated);
 
 module.exports = router;
