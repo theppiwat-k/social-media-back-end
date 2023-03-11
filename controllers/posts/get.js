@@ -1,6 +1,6 @@
 const { getStatus } = require('../../services/posts.services');
 
-module.exports.getStatus = async (req, res, next) => {
+module.exports.getStatusController = async (req, res, next) => {
   await getStatus(req.body, (error, results) => {
     if (error) {
       return res.status(400).send({ message: error });

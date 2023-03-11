@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { register } = require('../../services/users.services');
 
-module.exports.register = async (req, res, next) => {
+module.exports.registerController = async (req, res, next) => {
   const { password } = req.body;
 
   const salt = await bcrypt.genSaltSync(10);

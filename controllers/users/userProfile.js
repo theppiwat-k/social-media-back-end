@@ -1,6 +1,6 @@
 const { getUserProfile } = require('../../services/users.services');
 
-exports.userProfile = (req, res, next) => {
+module.exports.userProfileController = (req, res, next) => {
   const username = req.body.username;
   getUserProfile(username, (error, results) => {
     if (error) {

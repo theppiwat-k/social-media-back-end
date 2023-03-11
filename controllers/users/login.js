@@ -1,6 +1,6 @@
 const { login } = require('../../services/users.services');
 
-module.exports.login = async (req, res, next) => {
+module.exports.loginController = async (req, res, next) => {
   await login(req.body, (error, results) => {
     if (error) {
       return next(error);

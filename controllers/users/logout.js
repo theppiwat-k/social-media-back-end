@@ -1,6 +1,6 @@
 const { logout } = require('../../services/users.services');
 
-exports.logout = (req, res, next) => {
+module.exports.logoutController = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   logout(token, (error, results) => {

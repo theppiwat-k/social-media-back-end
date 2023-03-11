@@ -1,6 +1,6 @@
 const { activatedUser } = require("../../services/users.services");
 
-exports.activated = async (req, res, next) => {
+module.exports.activatedUserController = async (req, res, next) => {
   activatedUser(req.query, (error) => {
     if (error) {
       return next(error);
