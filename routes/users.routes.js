@@ -3,7 +3,7 @@ const loginController = require("../controllers/users/login");
 const logoutController = require("../controllers/users/logout");
 const userProfileController = require("../controllers/users/userProfile");
 const authenticateTokenController = require("../controllers/users/authenticateToken");
-const validateRegister = require("../utils/validateRegister");
+const validateRegister = require("../middlewares/validateRegister");
 
 const express = require("express");
 const router = express.Router();
