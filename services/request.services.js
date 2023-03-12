@@ -1,4 +1,5 @@
 const NewFriendRequest = require('../models/request.model');
+const User = require('../models/user.model');
 
 module.exports.newFriendRequest = async (body, next) => {
   try {
@@ -25,7 +26,7 @@ module.exports.newFriendRequest = async (body, next) => {
   }
 };
 
-module.exports.accecptNewFriendRequest = async ({id}, next) => {
+module.exports.accecptNewFriendRequest = async ({ id }, next) => {
   try {
     await NewFriendRequest.updateOne(
       {
@@ -46,7 +47,7 @@ module.exports.accecptNewFriendRequest = async ({id}, next) => {
   }
 };
 
-module.exports.rejectNewFriendRequest = async ({id}, next) => {
+module.exports.rejectNewFriendRequest = async ({ id }, next) => {
   try {
     await NewFriendRequest.updateOne(
       {
@@ -67,3 +68,18 @@ module.exports.rejectNewFriendRequest = async ({id}, next) => {
   }
 };
 
+module.exports.getNewFriendRequest = async ({ id }, next) => {
+  try {
+    console.log(id);
+    await NewFriendRequest.find({ recipient: id })
+      .populate('requester')
+      .exec((err, requester) => {
+        if (err) {
+          throw new Error(err);
+        }
+        return next(null, requester);
+      });
+  } catch (error) {
+    return next(error);
+  }
+};

@@ -6,12 +6,12 @@ const NewFriendRequestSchema = new Schema(
     requester: {
       // User who sent the friend request
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'user',
     },
     recipient: {
       // User who received the friend request
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'user',
     },
     status: {
       // Status of the friend request
