@@ -14,7 +14,6 @@ module.exports.newFriendRequest = async (body, next) => {
       recipient: recipient,
     });
     if (!existRequest) {
-      console.log(1);
       await newFriendRequest.save().then((response) => {
         return next(null, response);
       });
