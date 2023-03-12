@@ -40,11 +40,13 @@ app.use(
 app.use(express.json());
 const users = require('./routes/users.routes');
 const posts = require('./routes/posts.routes');
+const request = require('./routes/request.routes');
 app.use(express.urlencoded({ extended: false }));
 
 // initialize routes
 app.use('/users', users);
 app.use('/posts', posts);
+app.use('/request', request);
 
 // 404
 app.use((req, res) => {

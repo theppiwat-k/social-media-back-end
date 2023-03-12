@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
     const status = results.active.status;
     if (!status) {
       return res.status(400).send({
-        message: 'This email is invalid',
+        message: 'Failed, This email is invalid',
       });
     }
     return next();

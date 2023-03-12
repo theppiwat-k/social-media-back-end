@@ -1,3 +1,6 @@
+const express = require('express');
+const router = express.Router();
+
 const { registerController } = require('../controllers/users/register');
 const { loginController } = require('../controllers/users/login');
 const { logoutController } = require('../controllers/users/logout');
@@ -10,9 +13,6 @@ const {
 } = require('../controllers/users/activatedUser');
 
 const validateRegister = require('../middlewares/validateRegister');
-
-const express = require('express');
-const router = express.Router();
 
 router.post('/register', registerController);
 router.post('/login', validateRegister, loginController);
