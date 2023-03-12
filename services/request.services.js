@@ -24,3 +24,46 @@ module.exports.newFriendRequest = async (body, next) => {
     return next(error);
   }
 };
+
+module.exports.accecptNewFriendRequest = async ({id}, next) => {
+  try {
+    await NewFriendRequest.updateOne(
+      {
+        _id: id,
+      },
+      {
+        status: 'accepted',
+      }
+    )
+      .then((response) => {
+        return next(null, response);
+      })
+      .catch((error) => {
+        return next(error);
+      });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports.rejectNewFriendRequest = async ({id}, next) => {
+  try {
+    await NewFriendRequest.updateOne(
+      {
+        _id: id,
+      },
+      {
+        status: 'rejected',
+      }
+    )
+      .then((response) => {
+        return next(null, response);
+      })
+      .catch((error) => {
+        return next(error);
+      });
+  } catch (error) {
+    return next(error);
+  }
+};
+
