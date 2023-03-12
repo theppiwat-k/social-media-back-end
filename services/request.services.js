@@ -70,7 +70,6 @@ module.exports.rejectNewFriendRequest = async ({ id }, next) => {
 
 module.exports.getNewFriendRequest = async ({ id }, next) => {
   try {
-    console.log(id);
     await NewFriendRequest.find({ recipient: id })
       .populate('requester')
       .exec((err, requester) => {
