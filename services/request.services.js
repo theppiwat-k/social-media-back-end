@@ -26,11 +26,12 @@ module.exports.newFriendRequest = async (body, next) => {
   }
 };
 
-module.exports.accecptNewFriendRequest = async ({ id }, next) => {
+module.exports.accecptNewFriendRequest = async ({ requestId }, next) => {
+  console.log(requestId)
   try {
     await NewFriendRequest.updateOne(
       {
-        _id: id,
+        _id: requestId,
       },
       {
         status: 'accepted',
@@ -47,11 +48,11 @@ module.exports.accecptNewFriendRequest = async ({ id }, next) => {
   }
 };
 
-module.exports.rejectNewFriendRequest = async ({ id }, next) => {
+module.exports.rejectNewFriendRequest = async ({ requestId }, next) => {
   try {
     await NewFriendRequest.updateOne(
       {
-        _id: id,
+        _id: requestId,
       },
       {
         status: 'rejected',
