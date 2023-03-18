@@ -9,7 +9,7 @@ module.exports.login = async ({ email, password }, next) => {
   const user = await User.findOne({ email });
   if (user != null) {
     if (bcrypt.compareSync(password, user.password)) {
-      const token = tokenService.generateAccessToken(email);
+      const token = tokenService.generateAccessToken(user);
       const newtoken = await new Token({
         token: token,
         active: true,
@@ -75,7 +75,7 @@ module.exports.register = async (params, next) => {
   const body = {
     email: params.email,
     password: params.password,
-    username: params.email,
+    username: params.email.split('@')[0],
     active: {
       validateKey: validateKey,
       date: Date.now(),

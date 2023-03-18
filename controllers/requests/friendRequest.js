@@ -1,6 +1,6 @@
 const { newFriendRequest,getNewFriendRequest} = require('../../services/request.services');
 
-module.exports.friendRequestController = async (req, res) => {
+module.exports.sendRequestController = async (req, res) => {
   await newFriendRequest(req.body, (error, results) => {
     if (error) {
       return res.status(400).send({ message: error });
@@ -10,7 +10,7 @@ module.exports.friendRequestController = async (req, res) => {
 };
 
 module.exports.getNewFriendRequestController = async (req, res) => {
-  await getNewFriendRequest(req.body, (error, results) => {
+  await getNewFriendRequest(req.query, (error, results) => {
     if (error) {
       return res.status(400).send({ message: error });
     }
