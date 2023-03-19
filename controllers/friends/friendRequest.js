@@ -1,4 +1,4 @@
-const { newFriendRequest,getNewFriendRequest} = require('../../services/request.services');
+const { newFriendRequest,getNewFriendRequest} = require('../../services/friends.services');
 
 module.exports.sendRequestController = async (req, res) => {
   await newFriendRequest(req.body, (error, results) => {

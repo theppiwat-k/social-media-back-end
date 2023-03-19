@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const NewFriendRequestSchema = new Schema(
+const FriendRequestSchema = new Schema(
   {
     requester: {
       // User who sent the friend request
@@ -20,9 +20,8 @@ const NewFriendRequestSchema = new Schema(
       default: 'pending',
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-
-const NewFriendRequest = mongoose.model('request',NewFriendRequestSchema);
-module.exports = NewFriendRequest
+const Friend = mongoose.model('friend', FriendRequestSchema);
+module.exports = Friend;

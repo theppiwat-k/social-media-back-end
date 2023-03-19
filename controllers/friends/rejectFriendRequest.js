@@ -1,4 +1,4 @@
-const { rejectNewFriendRequest } = require('../../services/request.services');
+const { rejectNewFriendRequest } = require('../../services/friends.services');
 
 module.exports.rejectFriendRequestController = async (req, res) => {
   await rejectNewFriendRequest(req.body, (error, results) => {

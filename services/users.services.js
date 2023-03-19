@@ -1,9 +1,10 @@
 const bcrypt = require('bcryptjs');
 const tokenService = require('./tokens.services');
 const crypto = require('crypto');
-const User = require('../models/user.model');
 const Token = require('../models/token.model');
 const sendMail = require('../utils/sendMail');
+
+const User = require('../models/user.model');
 
 module.exports.login = async ({ email, password }, next) => {
   const user = await User.findOne({ email });
@@ -115,3 +116,4 @@ module.exports.activatedUser = async (params, next) => {
     return next(error);
   }
 };
+
