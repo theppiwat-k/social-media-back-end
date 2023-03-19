@@ -1,7 +1,7 @@
 const { getSuggestFriend } = require('../../services/friends.services');
 
 module.exports.getSuggestFriendController = async (req, res) => {
-  await getSuggestFriend(req.body, (error, results) => {
+  await getSuggestFriend(req.query, (error, results) => {
     if (error) {
       return res.status(400).send({ message: error });
     }
