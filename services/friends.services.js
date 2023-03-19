@@ -81,7 +81,6 @@ module.exports.rejectNewFriendRequest = async (
 };
 
 module.exports.getNewFriendRequest = async ({ id }, next) => {
-  console.log(id)
   try {
     await Friend.find({ recipient: id, status: 'pending' })
       .populate('requester')
@@ -97,13 +96,11 @@ module.exports.getNewFriendRequest = async ({ id }, next) => {
 };
 
 module.exports.getSuggestFriend = async ({ id }, next) => {
-  // console.log(id);
   const userId = id;
   const friends = await Friend.find({
     $or: [{ requester: id }, { recipient: id }],
     $and: [{ $or: [{status: 'accepted'}, {status: 'pending'}] }],
   });
-  // console.log(friends);
   const friendId = friends.map((friend) => {
     const requester = friend.requester.toString();
     const recipient = friend.recipient.toString();
@@ -114,7 +111,6 @@ module.exports.getSuggestFriend = async ({ id }, next) => {
       return recipient;
     }
   });
-  // console.log(friendId);
   await User.find({ _id: { $ne: userId, $nin: friendId } })
     .limit(10)
     .sort({ date: -1 })
