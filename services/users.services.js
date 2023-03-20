@@ -117,3 +117,13 @@ module.exports.activatedUser = async (params, next) => {
     }
 };
 
+module.exports.updateUserProfile = async (params, next) => {
+    const { id, username } = params;
+    await User.findOneAndUpdate({ _id: id }, { username: username })
+        .then((response) => {
+            return next(null, response);
+        })
+        .catch((error) => {
+            return next(error);
+        });
+};

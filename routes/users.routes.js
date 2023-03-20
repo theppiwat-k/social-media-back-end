@@ -13,6 +13,9 @@ const {
 } = require('../controllers/users/activatedUser');
 
 const validateRegister = require('../middlewares/validateRegister');
+const {
+    updateUserProfileController,
+} = require('../controllers/users/updateProfile');
 
 router.post('/register', registerController);
 router.post('/login', validateRegister, loginController);
@@ -20,5 +23,6 @@ router.post('/logout', logoutController);
 router.post('/user-profile', userProfileController);
 router.get('/authorization', getTokenController);
 router.get('/activated', activatedUserController);
+router.post('/update-profile', updateUserProfileController);
 
 module.exports = router;
