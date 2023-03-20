@@ -6,10 +6,10 @@ const { loginController } = require('../controllers/users/login');
 const { logoutController } = require('../controllers/users/logout');
 const { userProfileController } = require('../controllers/users/userProfile');
 const {
-  getTokenController,
+    getTokenController,
 } = require('../controllers/users/authenticateToken');
 const {
-  activatedUserController,
+    activatedUserController,
 } = require('../controllers/users/activatedUser');
 
 const validateRegister = require('../middlewares/validateRegister');

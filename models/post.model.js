@@ -1,27 +1,27 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const PostSchema = new Schema({
-  message: {
-    type: String,
-    required: true,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  uid: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: Date,
-    default: Date.now(),
-  },
+    message: {
+        type: String,
+        required: true,
+    },
+    username: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    uid: {
+        type: String,
+        required: true,
+    },
+    date: {
+        type: Date,
+        default: Date.now(),
+    },
 });
 
 /**
@@ -29,13 +29,13 @@ const PostSchema = new Schema({
     removing _id, __v, and the password hash which we do not need 
     to send back to the client.
  */
-PostSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
+PostSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString();
+        delete returnedObject._id;
+        delete returnedObject.__v;
+    },
 });
 
-const Post = mongoose.model("post", PostSchema);
+const Post = mongoose.model('post', PostSchema);
 module.exports = Post;

@@ -3,32 +3,32 @@ const { Schema } = mongoose;
 const uniqueValidator = require('mongoose-unique-validator');
 
 const UserSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  active: {
-    status: { type: Boolean, required: true, default: false },
-    validateKey: {
-      type: String,
+    username: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    active: {
+        status: { type: Boolean, required: true, default: false },
+        validateKey: {
+            type: String,
+        },
+        date: {
+            type: Date,
+        },
     },
     date: {
-      type: Date,
+        type: Date,
+        default: Date.now(),
     },
-  },
-  date: {
-    type: Date,
-    default: Date.now(),
-  },
 });
 
 /**
@@ -37,13 +37,13 @@ const UserSchema = new Schema({
     to send back to the client.
  */
 UserSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-    //do not reveal passwordHash
-    delete returnedObject.password;
-  },
+    transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString();
+        delete returnedObject._id;
+        delete returnedObject.__v;
+        //do not reveal passwordHash
+        delete returnedObject.password;
+    },
 });
 
 /**
