@@ -98,8 +98,8 @@ module.exports.getNewFriendRequest = async ({ id }, next) => {
 module.exports.getSuggestFriend = async ({ id }, next) => {
   const userId = id;
   const friends = await Friend.find({
-    $or: [{ requester: id }, { recipient: id }],
-    $and: [{ $or: [{status: 'accepted'}, {status: 'pending'}] }],
+    $or: [{ requester: userId }, { recipient: userId }],
+    $and: [{ $or: [{ status: 'accepted' }, { status: 'pending' }] }],
   });
   const friendId = friends.map((friend) => {
     const requester = friend.requester.toString();
@@ -121,4 +121,27 @@ module.exports.getSuggestFriend = async ({ id }, next) => {
       }
       return next(null, response);
     });
+};
+
+module.exports.getFriend = async ({ id }, next) => {
+  const userId = id;
+  const friends = await Friend.find({
+    $or: [{ requester: userId }, { recipient: userId }],
+    $and: [{ $or: [{ status: 'accepted' }] }],
+  }).sort({ date: -1 })
+  const friendId = friends.map((friend) => {
+    const requester = friend.requester.toString();
+    const recipient = friend.recipient.toString();
+    if (requester !== userId) {
+      return requester;
+    }
+    if (recipient !== userId) {
+      return recipient;
+    }
+  });
+  await User.find({_id:{ $in: friendId}}).then((response)=>{
+    return next(null, response);
+  }).catch((error)=>{
+    return next(error);
+  })
 };
