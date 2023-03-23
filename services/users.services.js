@@ -1,10 +1,13 @@
 const bcrypt = require('bcryptjs');
-const tokenService = require('./tokens.services');
 const crypto = require('crypto');
+const path = require('path');
+
+const tokenService = require('./tokens.services');
 const Token = require('../models/token.model');
 const sendMail = require('../utils/sendMail');
 
 const User = require('../models/user.model');
+const uploadAvatar = require('../utils/uploadAvatar');
 
 module.exports.login = async ({ email, password }, next) => {
     const user = await User.findOne({ email });
@@ -117,9 +120,18 @@ module.exports.activatedUser = async (params, next) => {
     }
 };
 
-module.exports.updateUserProfile = async (params, next) => {
-    const { id, username } = params;
-    await User.findOneAndUpdate({ _id: id }, { username: username })
+module.exports.updateUserProfile = async (req, next) => {
+    const { body, file } = req;
+    const { id, username } = body;
+    const avatarUrl = `../public/avatars/${id}.jpg`;
+    const avatarPath = path.join(__dirname, avatarUrl);
+    if (file) {
+        await uploadAvatar(file, avatarPath);
+    }
+    await User.findOneAndUpdate(
+        { _id: id },
+        { username: username, avatar: `avatars/${id}.jpg` }
+    )
         .then((response) => {
             return next(null, response);
         })

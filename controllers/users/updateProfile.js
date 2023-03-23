@@ -1,7 +1,8 @@
 const { updateUserProfile } = require('../../services/users.services');
 
 module.exports.updateUserProfileController = (req, res, next) => {
-    updateUserProfile(req.body, (error, results) => {
+
+    updateUserProfile(req, (error, results) => {
         if (error) {
             return next(error);
         }

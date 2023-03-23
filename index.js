@@ -2,13 +2,18 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { unless } = require('express-unless');
+const path = require('path');
+
 require('dotenv').config();
 
 const auth = require('./middlewares/auth.js');
 const errors = require('./middlewares/errors.js');
-
 const app = express({ extends: false });
-const { DB,PORT } = process.env;
+
+app.use('/avatars', express.static(path.join(__dirname, 'public/avatars')));
+
+
+const { DB, PORT } = process.env;
 mongoose.Promise = global.Promise;
 mongoose
     .connect(DB, {
@@ -20,22 +25,22 @@ mongoose
             console.log('Database connected');
         },
         (error) => {
-            console.log('Database can\'t be connected: ' + error);
+            console.log('Database can not be connected: ' + error);
         }
     );
 
 app.use(cors());
 
 auth.authenticateToken.unless = unless;
-app.use(
-    auth.authenticateToken.unless({
-        path: [
-            { url: '/users/login', methods: ['POST'] },
-            { url: '/users/register', methods: ['POST'] },
-            { url: '/users/activated', methods: ['GET'] },
-        ],
-    })
-);
+// app.use(
+//     auth.authenticateToken.unless({
+//         path: [
+//             { url: '/users/login', methods: ['POST'] },
+//             { url: '/users/register', methods: ['POST'] },
+//             { url: '/users/activated', methods: ['GET'] },
+//         ],
+//     })
+// );
 
 app.use(express.json());
 const users = require('./routes/users.routes');
