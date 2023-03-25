@@ -32,15 +32,15 @@ mongoose
 app.use(cors());
 
 auth.authenticateToken.unless = unless;
-// app.use(
-//     auth.authenticateToken.unless({
-//         path: [
-//             { url: '/users/login', methods: ['POST'] },
-//             { url: '/users/register', methods: ['POST'] },
-//             { url: '/users/activated', methods: ['GET'] },
-//         ],
-//     })
-// );
+app.use(
+    auth.authenticateToken.unless({
+        path: [
+            { url: '/users/login', methods: ['POST'] },
+            { url: '/users/register', methods: ['POST'] },
+            { url: '/users/activated', methods: ['GET'] },
+        ],
+    })
+);
 
 app.use(express.json());
 const users = require('./routes/users.routes');

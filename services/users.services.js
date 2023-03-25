@@ -125,7 +125,7 @@ module.exports.updateUserProfile = async (req, next) => {
     const { id, username } = body;
     const avatarUrl = `../public/avatars/${id}.jpg`;
     const avatarPath = path.join(__dirname, avatarUrl);
-    if (file) {
+    if (file && id) {
         await uploadAvatar(file, avatarPath);
     }
     await User.findOneAndUpdate(
