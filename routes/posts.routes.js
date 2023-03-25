@@ -4,7 +4,7 @@ const router = express.Router();
 const { getStatusController } = require('../controllers/posts/get');
 const { postStatusController } = require('../controllers/posts/save');
 
-router.get('/status', getStatusController);
+router.post('/getstatus', getStatusController);
 router.post('/status', postStatusController);
 // router.post("/story", postController.story);
 

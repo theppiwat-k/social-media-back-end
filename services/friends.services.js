@@ -114,7 +114,7 @@ module.exports.getSuggestFriend = async ({ id }, next) => {
     await User.find({ _id: { $ne: userId, $nin: friendId } })
         .limit(10)
         .sort({ date: -1 })
-        .select({ username: 1, date: 1 })
+        .select({ username: 1, date: 1,avatar:1 })
         .exec((error, response) => {
             if (error) {
                 return next(error);

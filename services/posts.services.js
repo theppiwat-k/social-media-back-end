@@ -1,14 +1,10 @@
-const User = require('../models/user.model');
 const Post = require('../models/post.model');
 
-module.exports.postStatus = async ({ username, message }, next) => {
+module.exports.postStatus = async ({ author, message }, next) => {
     try {
-        const user = await User.findOne({ username });
         const post = await new Post({
             message: message,
-            username: user.username,
-            email: user.email,
-            uid: user._id.toString(),
+            author: author,
         });
         await post.save();
         return next(null, post);
@@ -17,10 +13,18 @@ module.exports.postStatus = async ({ username, message }, next) => {
     }
 };
 
-module.exports.getStatus = async ({ id }, next) => {
+module.exports.getStatus = async (req, next) => {
     try {
-        const post = await Post.find(id);
-        return next(null, post);
+        await Post.find()
+            .populate('author', 'username avatar')
+            .sort({date:-1})
+            .select({ message: 1, date: 1 })
+            .exec((err, posts) => {
+                if (err) {
+                    throw new Error(err);
+                }
+                return next(null, posts);
+            });
     } catch (error) {
         return next(error.message);
     }

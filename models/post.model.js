@@ -6,17 +6,9 @@ const PostSchema = new Schema({
         type: String,
         required: true,
     },
-    username: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    uid: {
-        type: String,
-        required: true,
+    author:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
     },
     date: {
         type: Date,
