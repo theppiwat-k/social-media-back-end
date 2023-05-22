@@ -1,32 +1,51 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const PostSchema = new Schema(
+    {
+        message: {
+            type: String,
+            required: true,
+        },
+        author: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+        },
+        date: {
+            type: Date,
+            default: Date.now(),
+        },
+        comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'comment' }],
+        likes: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'user',
+                },
+                date: {
+                    type: Date,
+                    default: Date.now(),
+                },
+            },
+        ],
+    },
+    {
+        toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals
+        toObject: { virtuals: true }, // So `console.log()` and other functions that use `toObject()` include virtuals
+    }
+);
 
-const PostSchema = new Schema({
-    message: {
-        type: String,
-        required: true,
-    },
-    author:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
-    },
-    date: {
-        type: Date,
-        default: Date.now(),
-    },
-});
-
-/**
- *  Here we are creating and setting an id property and 
-    removing _id, __v, and the password hash which we do not need 
-    to send back to the client.
- */
 PostSchema.set('toJSON', {
+    virtuals: true,
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
-        delete returnedObject.__v;
     },
+});
+
+PostSchema.virtual('commentofpost', {
+    ref: 'Comment',
+    localField: '_id',
+    foreignField: 'post',
 });
 
 const Post = mongoose.model('post', PostSchema);

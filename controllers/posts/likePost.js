@@ -1,7 +1,7 @@
-const { getStatus } = require('../../services/posts.services');
+const { likePost } = require('../../services/posts.services');
 
-module.exports.getStatusController = async (req, res) => {
-    await getStatus(req.body, (error, results) => {
+module.exports.likePostController = async (req, res) => {
+    await likePost(req.body, (error, results) => {
         if (error) {
             return res.status(400).send({ message: error });
         }

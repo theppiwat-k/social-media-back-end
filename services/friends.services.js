@@ -56,10 +56,7 @@ module.exports.accecptNewFriendRequest = async (
     }
 };
 
-module.exports.rejectNewFriendRequest = async (
-    { requestId },
-    next
-) => {
+module.exports.rejectNewFriendRequest = async ({ requestId }, next) => {
     try {
         await Friend.updateOne(
             {
@@ -114,7 +111,7 @@ module.exports.getSuggestFriend = async ({ id }, next) => {
     await User.find({ _id: { $ne: userId, $nin: friendId } })
         .limit(10)
         .sort({ date: -1 })
-        .select({ username: 1, date: 1,avatar:1 })
+        .select({ username: 1, date: 1, avatar: 1 })
         .exec((error, response) => {
             if (error) {
                 return next(error);
@@ -125,25 +122,29 @@ module.exports.getSuggestFriend = async ({ id }, next) => {
 
 module.exports.getFriend = async ({ id }, next) => {
     const userId = id;
-    const friends = await Friend.find({
-        $or: [{ requester: userId }, { recipient: userId }],
-        $and: [{ $or: [{ status: 'accepted' }] }],
-    }).sort({ date: -1 });
-    const friendId = friends.map((friend) => {
-        const requester = friend.requester.toString();
-        const recipient = friend.recipient.toString();
-        if (requester !== userId) {
-            return requester;
-        }
-        if (recipient !== userId) {
-            return recipient;
-        }
-    });
-    await User.find({ _id: { $in: friendId } })
-        .then((response) => {
-            return next(null, response);
-        })
-        .catch((error) => {
-            return next(error);
+    try {
+        const friends = await Friend.find({
+            $or: [{ requester: userId }, { recipient: userId }],
+            $and: [{ $or: [{ status: 'accepted' }] }],
+        }).sort({ date: -1 });
+        const friendId = friends.map((friend) => {
+            const requester = friend.requester.toString();
+            const recipient = friend.recipient.toString();
+            if (requester !== userId) {
+                return requester;
+            }
+            if (recipient !== userId) {
+                return recipient;
+            }
         });
+        await User.find({ _id: { $in: friendId } })
+            .then((response) => {
+                return next(null, response);
+            })
+            .catch((error) => {
+                return next(error);
+            });
+    } catch (error) {
+        return next(error);
+    }
 };
